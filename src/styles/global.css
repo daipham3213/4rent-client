@@ -1,0 +1,69 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.content:not(.ignore-p, .ignore-p *) p {
+  @apply my-6;
+}
+
+*:not(.ignore, .ignore *) {
+  @apply font-sans;
+}
+
+:root {
+  /* Your default theme */
+  --background: #EEEEEE;
+  --foreground: rgb(45 55 72);
+}
+
+[data-theme='dark'] {
+  --background: rgb(45 55 72);
+  --foreground: #EEEEEE;
+}
+
+div {
+  display: block;
+}
+
+@keyframes wave {
+  0% {
+    left: -100%
+  }
+  100% {
+    left: 150%
+  }
+}
+
+.bg-gradiant {
+  background: #2980B9;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #6DD5FA, #3099DE);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(-45deg, #FFFFFF, #6DD5FA, #3099DE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.main {
+  @apply dark:text-gray-300 dark:bg-gray-800
+}
+
+.equal {
+  width: 100%;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.equal:before {
+  content: "";
+  display: block;
+  float: left;
+  padding-top: 100%;
+}
+
+.textarea {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  /*resize: both;*/
+  min-height: 40px;
+  line-height: 20px;
+}
