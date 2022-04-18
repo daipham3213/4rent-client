@@ -1,0 +1,54 @@
+.slider__container {
+  @apply relative grid place-items-center;
+}
+
+.slider {
+  @apply relative w-full h-10;
+}
+
+.slider__track,
+.slider__range,
+.slider__left-value,
+.slider__right-value {
+  @apply absolute;
+}
+
+
+.slider__track,
+.slider__range {
+  @apply rounded-full h-5;
+}
+
+.slider__track {
+  @apply bg-gray-300 dark:bg-gray-600 w-full;
+  z-index: 1;
+}
+
+.slider__range {
+  @apply bg-primary;
+  z-index: 2;
+}
+
+.slider__left-value,
+.slider__right-value {
+  @apply text-gray-800 dark:text-gray-300 text-sm mt-5;
+}
+
+.slider__left-value {
+  left: 5px;
+}
+
+.slider__right-value {
+  right: 5px;
+}
+
+.thumb,
+.thumb::-webkit-slider-thumb {
+  @apply appearance-none bg-gray-400 dark:bg-gray-500 border-0 rounded-full w-6 h-6 shadow-sm cursor-pointer mt-1 relative;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: all;
+}
+
+.thumb {
+  @apply pointer-events-none absolute h-0 outline-none w-full top-1;
+}

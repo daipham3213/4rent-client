@@ -45,19 +45,21 @@ const Sidebar: React.FC<ISidebar> = ({ activeUser, items }) => {
         <div className="w-full">
           <div className="hidden flex-col items-center justify-center px-10 xl:flex">
             <Link href="/login" passHref>
-              <Button fullWidth>Login</Button>
+              <a>
+                <Button fullWidth>Login</Button>
+              </a>
             </Link>
             <Link href="/register" passHref>
-              <p className="cursor-pointer text-sm text-primary-400 hover:underline dark:text-primary-500">
+              <a className="cursor-pointer text-sm text-primary-400 hover:underline dark:text-primary-500">
                 Signing up?
-              </p>
+              </a>
             </Link>
           </div>
           <Tooltip message="To login page" top="-40%" left="50%">
             <Link href="/login" passHref>
-              <div className="block rounded-full p-2 group-hover:bg-gray-300 dark:group-hover:bg-gray-700 xl:hidden">
+              <a className="block rounded-full p-2 group-hover:bg-gray-300 dark:group-hover:bg-gray-700 xl:hidden">
                 <Icon name="LockClosedIcon" className="h-8 w-8" />
-              </div>
+              </a>
             </Link>
           </Tooltip>
         </div>

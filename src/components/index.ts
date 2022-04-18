@@ -15,4 +15,5 @@ export { default as ImageGrid } from './image-grid';
 export { default as Tooltip } from './tooltip';
 export { default as Checkbox } from './checkbox';
 export { default as Fab } from './fab';
+export { default as RangeSlider } from './range-slider';
 export * from './provider';

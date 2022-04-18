@@ -1,3 +1,7 @@
+@import "RangeSlider.module.css";
+@import "animations.css";
+@import "TextArea.module.css";
+
 @tailwind base;
 
 @tailwind components;
@@ -27,14 +31,6 @@ div {
   display: block;
 }
 
-@keyframes wave {
-  0% {
-    left: -100%
-  }
-  100% {
-    left: 150%
-  }
-}
 
 .bg-gradiant {
   background: #2980B9;  /* fallback for old browsers */
@@ -44,26 +40,4 @@ div {
 
 .main {
   @apply dark:text-gray-300 dark:bg-gray-800
-}
-
-.equal {
-  width: 100%;
-  overflow: hidden;
-  line-height: 1;
-}
-
-.equal:before {
-  content: "";
-  display: block;
-  float: left;
-  padding-top: 100%;
-}
-
-.textarea {
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  /*resize: both;*/
-  min-height: 40px;
-  line-height: 20px;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Transition } from '@headlessui/react';
 import classNames from 'classnames';
@@ -6,14 +6,16 @@ import classNames from 'classnames';
 import { BaseHTMLProps } from '@/components/components';
 import Icon from '@/templates/components/icon';
 
-import { IImageGrid, IIndicator, IMedia } from './image-grid';
+import { IGridContext, IImageGrid, IIndicator, IMedia } from './image-grid';
 
-const GridContext = React.createContext<IIndicator>({
+const GridContext = React.createContext<IGridContext>({
+  activeIndex: 0,
+  activeItem: { src: '' },
   media: [],
   onActiveChange: () => {},
 });
 
-const useGridContext = (media: IMedia[]): Omit<IIndicator, 'renderItem'> => {
+const useGridContext = (media: IMedia[]): Omit<IGridContext, 'renderItem'> => {
   const [activeIndex, setActive] = React.useState(0);
 
   const onActiveChange = (index: number) => {
@@ -21,7 +23,7 @@ const useGridContext = (media: IMedia[]): Omit<IIndicator, 'renderItem'> => {
   };
 
   return {
-    activeItem: media[activeIndex],
+    activeItem: media[activeIndex] as any,
     onActiveChange,
     media,
     activeIndex,
@@ -34,26 +36,31 @@ const Wrapper: React.FC<IImageGrid> = ({
   className,
   ...rest
 }) => {
-  const { activeItem, activeIndex = 0, onActiveChange } = useGridContext(media);
+  const {
+    activeItem,
+    activeIndex = 0,
+    onActiveChange,
+    ...props
+  } = useGridContext(media);
   const [previous, setPrevious] = React.useState(0);
 
   const renderItem = (item: IMedia, i: number) => {
+    const isRight = previous > activeIndex;
     return (
       <Transition
         key={i}
         as={React.Fragment}
         show={activeIndex === i}
-        enterFrom={classNames(
-          { 'translate-x-full': previous < activeIndex },
-          { '-translate-x-full': previous > activeIndex }
-        )}
-        enter="transition-all transform ease-in"
-        enterTo="translate-x-0"
-        leave="transition-all transform	ease-in"
-        leaveTo={classNames(
-          { 'translate-x-full': previous > activeIndex },
-          { '-translate-x-full': previous < activeIndex }
-        )}
+        enter="transform transition ease-in-out duration-500"
+        enterFrom={
+          isRight ? `translate-x-96 opacity-0` : `-translate-x-96 opacity-0`
+        }
+        enterTo={`translate-x-0 opacity-100`}
+        leave="transform transition ease-in-out duration-500 "
+        leaveFrom={`translate-x-0 opacity-100`}
+        leaveTo={
+          isRight ? `-translate-x-96 opacity-0` : `translate-x-96 opacity-0`
+        }
       >
         {item.isVideo ? (
           <video
@@ -81,7 +88,9 @@ const Wrapper: React.FC<IImageGrid> = ({
   };
 
   return (
-    <GridContext.Provider value={{ media, onActiveChange, activeItem }}>
+    <GridContext.Provider
+      value={{ onActiveChange, activeIndex, activeItem, ...props }}
+    >
       <div className={classNames('relative w-full', className)} {...rest}>
         <div className="equal flex flex-row">{media.map(renderItem)}</div>
         <p className="absolute bottom-2 left-1/2 text-sm text-gray-300">
@@ -99,23 +108,21 @@ const Wrapper: React.FC<IImageGrid> = ({
         />
       </div>
       <React.Fragment>
-        {typeof children === 'function'
-          ? children({ media, activeItem, activeIndex, onActiveChange })
-          : children}
+        {typeof children === 'function' ? children({ ...props }) : children}
       </React.Fragment>
     </GridContext.Provider>
   );
 };
 
 const Indicator: React.FC<IIndicator & BaseHTMLProps<HTMLDivElement>> = ({
-  activeIndex = 0,
-  activeItem,
   renderItem,
   media,
   maxDots = 5,
   className,
   ...rest
 }) => {
+  const { activeIndex, activeItem } = useContext(GridContext);
+
   const { length } = media;
   const middle = Number((maxDots / 2).toFixed());
 

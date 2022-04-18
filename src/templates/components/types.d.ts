@@ -5,14 +5,14 @@ export interface ILocation {
 
 export interface UserView {
   id: string;
-  fistName: string;
+  firstName: string;
   username: string;
   lastName: string;
   avatar?: string;
 }
 
 export interface BaseProps {
-  createdAt: Date;
+  createdAt: number;
   createdBy: UserView;
   remark?: string;
 }

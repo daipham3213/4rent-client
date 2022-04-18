@@ -2,9 +2,8 @@ import React from 'react';
 
 import { ILocation, BaseProps, UserView } from '../types';
 
-export interface IPost extends BaseProps {
+export interface IPost extends BaseProps, ILocation {
   contents: string;
-  location: ILocation;
   price: number;
   floorArea: number;
   furnitureStatus: string;

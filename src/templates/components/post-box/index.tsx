@@ -1,12 +1,13 @@
 import React from 'react';
 
+import Link from 'next/link';
 import Geocode from 'react-geocode';
 
 import useOutSideClick from '@/hooks/useOutSideClick';
 import Icon, { FloorPlan } from '@/templates/components/icon';
 import Map from '@/templates/components/map';
 import { ILocation } from '@/templates/components/types';
-import { Avatar, Input, Modal } from '@components';
+import { Avatar, Button, Input, Modal } from '@components';
 import { TextArea } from '@templates';
 
 import { IPostBox } from './post-box';
@@ -47,7 +48,7 @@ const PostBox: React.FC<IPostBox> = ({
   };
 
   if (activeUser) {
-    const { avatar, lastName, fistName, username } = activeUser;
+    const { avatar, lastName, firstName, username } = activeUser;
     return (
       <Modal visible={isShow}>
         <div
@@ -57,7 +58,7 @@ const PostBox: React.FC<IPostBox> = ({
           <Avatar
             className="z-10"
             src={avatar}
-            alt={`avatar-${fistName}-${lastName}`}
+            alt={`avatar-${firstName}-${lastName}`}
           >
             {username}
           </Avatar>
@@ -90,7 +91,34 @@ const PostBox: React.FC<IPostBox> = ({
       </Modal>
     );
   }
-  return <React.Fragment />;
+  return (
+    <Modal visible={isShow}>
+      <div ref={ref} className="flex h-80 w-96 flex-row p-5">
+        <Icon
+          className="w-20 rounded-full text-danger-600"
+          name="LockClosedIcon"
+          outline
+        />
+        <div className="flex h-full w-full flex-col items-center justify-evenly">
+          <h6 className="text-2xl dark:text-gray-800">Credential required</h6>
+          <div className="flex w-full flex-col items-center">
+            <Link href="/login" passHref>
+              <a>
+                <Button size="large" className="w-52">
+                  <p className="font-semibold">Login</p>
+                </Button>
+              </a>
+            </Link>
+            <Link href="/register" passHref>
+              <a className="cursor-pointer text-sm text-primary hover:underline">
+                Create a new account?
+              </a>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
 };
 
 export default PostBox;

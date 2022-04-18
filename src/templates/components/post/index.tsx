@@ -11,6 +11,7 @@ import {
 } from '@heroicons/react/outline';
 import classNames from 'classnames';
 import moment from 'moment';
+import Geocode from 'react-geocode';
 
 import { IMedia } from '@/components/image-grid/image-grid';
 import { TextArea } from '@/templates';
@@ -54,11 +55,10 @@ const CommentBox: React.FC<ICommentBox> = ({
       handleSendClick();
     }
   }, [enterPressed, handleSendClick, images, isFocus, message]);
-
   return (
     <div
       className={classNames('flex w-full flex-row gap-2 px-0.5', {
-        hidden: !currentUser,
+        'hidden': !currentUser,
       })}
     >
       {currentUser ? (
@@ -109,7 +109,7 @@ const Comment: React.FC<IComment> = ({
   currentUser,
   replies,
 }) => {
-  const { avatar, username, fistName, lastName } = createdBy;
+  const { avatar, username, firstName, lastName } = createdBy;
 
   const [showReplies, setShowReplies] = React.useState<boolean>(false);
   const [isReplying, setReplying] = React.useState<boolean>(false);
@@ -124,7 +124,7 @@ const Comment: React.FC<IComment> = ({
           <Avatar
             src={avatar}
             alt={username}
-            aria-label={`avatar-${fistName}-${lastName}`}
+            aria-label={`avatar-${firstName}-${lastName}`}
             className="pt-5"
           >
             {username}
@@ -133,7 +133,7 @@ const Comment: React.FC<IComment> = ({
           <div className="w-full pb-5">
             <p className="rounded-lg bg-gray-300 py-2 px-5 text-justify text-base dark:bg-gray-800">
               <span className="py-2 font-semibold">
-                {fistName} {lastName}
+                {firstName} {lastName}
               </span>
               <br />
               {message}
@@ -141,10 +141,10 @@ const Comment: React.FC<IComment> = ({
 
             <div className="flex flex-row justify-between text-sm">
               <p
-                onClick={() => setReplying(!isReplying)}
+                onClick={() => (currentUser ? setReplying(!isReplying) : {})}
                 className="cursor-pointer pt-1 pl-5 font-semibold hover:text-primary-500 hover:underline"
               >
-                Reply
+                {currentUser ? 'Reply' : undefined}
               </p>
               <p className="pr-5 pt-1">{moment(createdAt).fromNow()}</p>
             </div>
@@ -205,31 +205,34 @@ const Post: React.FC<IPost> = ({
   createdBy,
   floorArea,
   furnitureStatus,
-  location,
+  latitude,
+  longitude,
   currentUser,
   price,
 }) => {
-  const { lastName, fistName, avatar, username } = createdBy;
+  const [address, setAddress] = React.useState<string>('');
+
+  const { lastName, firstName, avatar, username } = createdBy;
 
   const comments: IComment[] = Array.from({ length: 2 }, () => ({
     id: faker.datatype.uuid(),
     message: faker.lorem.paragraph(10),
     createdBy: {
       id: faker.datatype.uuid(),
-      fistName: faker.name.firstName(),
+      firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       username: faker.internet.userName(),
       avatar: faker.image.avatar(),
     },
-    createdAt: faker.date.recent(8),
+    createdAt: faker.date.recent(8).getTime(),
     replies: Array.from({ length: 2 }, () => ({
       id: faker.datatype.uuid(),
       message: faker.lorem.paragraph(5),
       replies: [],
-      createdAt: faker.date.recent(5),
+      createdAt: faker.date.recent(5).getTime(),
       createdBy: {
         id: faker.datatype.uuid(),
-        fistName: faker.name.firstName(),
+        firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         username: faker.internet.userName(),
         avatar: faker.image.avatar(),
@@ -238,10 +241,17 @@ const Post: React.FC<IPost> = ({
   }));
 
   const media: IMedia[] = Array.from({ length: 10 }, () => ({
-    src: faker.image.animals(250, 250, true),
+    src: faker.image.lorempicsum.imageRandomSeeded(250, 250),
     alt: faker.lorem.text(5),
     isVideo: false,
   }));
+
+  React.useEffect(() => {
+    Geocode.fromLatLng(String(latitude), String(longitude)).then((value) => {
+      const addr = value.results[0].formatted_address;
+      setAddress(addr);
+    });
+  }, [latitude, longitude]);
 
   const onMessageChange = (_: React.FormEvent<HTMLSpanElement>) => {};
 
@@ -254,7 +264,7 @@ const Post: React.FC<IPost> = ({
             {avatar ? null : username}
           </Avatar>
           <div>
-            <p className="text-base font-semibold">{`${fistName} ${lastName}`}</p>
+            <p className="text-base font-semibold">{`${firstName} ${lastName}`}</p>
             <p className="text-sm text-gray-500">@{username}</p>
           </div>
         </div>
@@ -292,7 +302,7 @@ const Post: React.FC<IPost> = ({
           </div>
           <div className="col-span-1 row-start-2 flex h-6 w-full flex-row gap-2 lg:row-start-1">
             <LocationMarkerIcon className="h-6 w-6" />
-            {location.longitude}
+            {address}
           </div>
           <p className="col-span-4 rounded-lg bg-gray-300 p-3 dark:bg-gray-500">
             {contents}

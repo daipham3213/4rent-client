@@ -25,7 +25,6 @@ export const Instance = axios.create({
   httpAgent: '4rent-client',
   headers: {
     'Content-type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
     ...getLocalToken(),
   },
 });

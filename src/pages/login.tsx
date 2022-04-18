@@ -2,7 +2,6 @@ import React from 'react';
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
 import { tokenKey } from '@/services/ApiProvider';
@@ -13,7 +12,6 @@ import { Unauthorized } from '@templates';
 
 const Login = () => {
   const { mutateAsync } = useLogin();
-  const router = useRouter();
 
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
@@ -26,13 +24,12 @@ const Login = () => {
         { username, password },
         {
           onSuccess: (data) => {
-            console.log(data);
             if (data.data) {
               const { token } = data.data;
               if (window) window.localStorage.setItem(tokenKey, token);
             }
             toast.success('Welcome!');
-            router.push('/');
+            window.location.href = '/';
           },
         }
       ),

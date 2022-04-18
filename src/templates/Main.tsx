@@ -68,14 +68,9 @@ const Main = (props: IMainProps) => {
             <MemoSidebar />
           </div>
           {/* Main section */}
-          <div className="col-span-8 col-start-1 p-5 text-xl md:col-span-7 md:col-start-2 xl:col-span-5 xl:col-start-3">
+          <div className="col-span-8 col-start-1 p-5 text-xl md:col-span-8 md:col-start-2 xl:col-span-6 xl:col-start-3">
             {props.children}
           </div>
-          {/* Recommendations */}
-          <div
-            className="invisible md:visible md:col-span-1"
-            aria-label="recommendations-col"
-          />
         </div>
       </div>
     </div>
