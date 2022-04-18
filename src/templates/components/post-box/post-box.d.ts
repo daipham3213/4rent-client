@@ -4,4 +4,5 @@ export interface IPostBox {
   activeUser?: UserView;
   isShow?: boolean;
   onBackdropClick?: () => void;
+  onPosted?: () => void;
 }

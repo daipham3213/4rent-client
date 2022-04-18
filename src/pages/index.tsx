@@ -113,6 +113,7 @@ const Index = () => {
             activeUser={auth}
             isShow={showPost}
             onBackdropClick={() => setShowPost(false)}
+            onPosted={() => setShowPost(false)}
           />
           {data && !data.pages[0]?.data?.empty ? (
             data.pages.map((page) => {

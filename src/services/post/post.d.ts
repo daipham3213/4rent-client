@@ -1,8 +1,8 @@
-import { IAlbumCreate } from '../album/album';
 import { IUserInfo } from '@/services/authentication/authentication';
 
+import { IAlbumCreate } from '../album/album';
+
 export interface IPostCreate {
-  id: string;
   contents: string;
   latitude: number;
   longitude: number;
@@ -14,6 +14,7 @@ export interface IPostCreate {
 }
 
 export interface IPostView extends IPostCreate {
+  id: string;
   createdAt: number;
   createdBy: IUserInfo;
   documentId: string;

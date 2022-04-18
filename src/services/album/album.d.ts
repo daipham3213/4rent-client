@@ -1,5 +1,4 @@
 export interface IAlbumCreate {
-  id: string;
   name: string;
   isHidden: boolean;
   images: IImageCreate[];

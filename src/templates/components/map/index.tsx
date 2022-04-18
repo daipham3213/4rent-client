@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Libraries } from '@googlemaps/js-api-loader';
 import {
   GoogleMap,
   Marker,
@@ -14,7 +15,7 @@ import { Spinner } from '@components';
 import { ILocation } from '../types';
 
 const apiKey = process.env.NEXT_PUBLIC_API_MAP_KEY ?? '';
-
+const libs: Libraries = ['places'];
 const Map = ({ onPlacesChange, defaultLocation, onMarkerChange }: IMap) => {
   const [location, setLocation] = React.useState<ILocation>(
     defaultLocation || {
@@ -26,7 +27,7 @@ const Map = ({ onPlacesChange, defaultLocation, onMarkerChange }: IMap) => {
     React.useState<google.maps.places.SearchBox>();
 
   const { isLoaded } = useJsApiLoader({
-    libraries: ['places'],
+    libraries: libs,
     googleMapsApiKey: apiKey,
   });
 
